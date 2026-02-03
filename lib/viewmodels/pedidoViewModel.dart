@@ -3,10 +3,14 @@ import 'package:application_bar_ud4/models/pedido.dart';
 import 'package:application_bar_ud4/models/producto.dart';
 import 'package:application_bar_ud4/models/productoPedido.dart';
 
+/// ViewModel que gestiona la lógica de los pedidos.
+/// Proporciona métodos para manejar la lista de pedidos y productos.
 class Pedidoviewmodel extends ChangeNotifier{
 
   //Inicializamos los Productos
 
+/// Lista de productos disponibles.
+/// Cada producto tiene un [id], [nombre] y [precioUd].
 final List<Producto> listaProductos = [
   Producto(id: 1, nombre: "Estrella 1906", precioUd: 3.50),
   Producto(id: 2, nombre: "1/3 Estrella", precioUd: 3.00),
@@ -21,8 +25,13 @@ final List<Producto> listaProductos = [
 ];
 
   //Inicializamos nuestros pedidos iniciales
+  /// Lista de pedidos existentes.
+  /// Cada pedido tiene un [mesa] y una lista de [productos].
   late List<Pedido> listaPedidos;
 
+  /// Constructor de la clase Pedidoviewmodel.
+  /// Inicializa la lista de pedidos con algunos valores predeterminados.
+  /// Cada pedido contiene productos seleccionados de la lista de productos disponibles.
   Pedidoviewmodel() {
     listaPedidos = [
       Pedido(mesa: 1, productos: [ProductoPedido(producto: listaProductos[0], cantidad: 2),
@@ -36,6 +45,8 @@ final List<Producto> listaProductos = [
     ];
   }
 
+  /// Añade un nuevo pedido a la lista de pedidos.
+  /// Notifica a los oyentes sobre el cambio.
   void anadirPedido(Pedido pedi) {
     listaPedidos.add(pedi);
     notifyListeners();
