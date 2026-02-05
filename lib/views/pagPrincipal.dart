@@ -105,7 +105,8 @@ class _PagprincipalState extends State<Pagprincipal> {
                             builder: (context) => PagPedido(viewModel: widget.viewModel),
                             ),
                         );
-
+                        /// Si se ha creado un nuevo pedido, se añade a la lista de pedidos mediante el ViewModel.
+                        /// Se verifica que el pedido no sea nulo y que la página siga montada antes de actualizar el estado.
                         if(pedidoNuevo !=null && mounted) {
                           widget.viewModel.anadirPedido(pedidoNuevo);
                         }
@@ -123,22 +124,6 @@ class _PagprincipalState extends State<Pagprincipal> {
           },
         ),
       ),
-      
-     /* floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          final pedidoNuevo = await Navigator.push(
-            context, MaterialPageRoute(
-              builder: (context) => PagPedido(viewModel: widget.viewModel),
-              ),
-          );
-
-          if(pedidoNuevo !=null && mounted) {
-            widget.viewModel.anadirPedido(pedidoNuevo);
-          }
-        },
-        tooltip: 'Nuevo Pedido',
-        child: const Text("Nuevo Pedido"),
-      ),*/
     );
   }
 }

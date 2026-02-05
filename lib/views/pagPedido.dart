@@ -125,7 +125,10 @@ class _PagPedidoState extends State<PagPedido> {
               message: "Ver resumen del pedido actual",
               child: ElevatedButton(
                 onPressed: () {
-                  if(produSelec.isEmpty || mesaControler.text.isEmpty) return;
+                  /// Validación para asegurarse de que se han seleccionado productos y una mesa antes de mostrar el resumen del pedido.
+                  if(produSelec.isEmpty || mesaControler.text.isEmpty) {
+                    return mostrarError('Para ver resumen, ha de tener productos añadidos y una mesa seleccionada');
+                    }
 
                   
                   Navigator.pushNamed(
@@ -173,37 +176,20 @@ class _PagPedidoState extends State<PagPedido> {
                   message: 'Añadir el pedido actual',
                   child: ElevatedButton(
                     onPressed: () {
+                      /// Validación para asegurarse de que se han seleccionado productos y una mesa antes de añadir el pedido.
                     if(produSelec.isEmpty && mesaControler.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Por favor, selecciona productos y una mesa'),
-                          backgroundColor: Colors.redAccent,
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                      return;
+                      return mostrarError('Por favor, selecciona productos y una mesa');
                     }
+                    /// Validación para asegurarse de que se han seleccionado productos antes de añadir el pedido.
                     else if(produSelec.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Por favor, selecciona productos'),
-                          backgroundColor: Colors.redAccent,
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                      return;
+                      return mostrarError('Por favor, selecciona productos');
                     }
+                    /// Validación para asegurarse de que se ha seleccionado una mesa antes de añadir el pedido.
                     else if(mesaControler.text.isEmpty) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Por favor, selecciona una mesa'),
-                          backgroundColor: Colors.redAccent,
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
-                      return;
+                      return mostrarError('Por favor, selecciona una mesa');
                     }
 
+                    /// Si la validación es correcta, se cierra la página y se devuelve el pedido creado al llamar a Navigator.pop con el pedido como argumento.
                     Navigator.pop(context, Pedido(
                       mesa: int.tryParse(mesaControler.text) ?? 0,
                       productos: produSelec
@@ -224,20 +210,13 @@ class _PagPedidoState extends State<PagPedido> {
       ),
     );
   }
-
-
+  /// Muestra un mensaje de error en un SnackBar.
+  /// Parámetros:
+  /// - [mensaje]: El mensaje de error a mostrar.
+  void mostrarError(String mensaje) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(mensaje), backgroundColor: Colors.redAccent),
+    );
+  }
 
 }
-
-
-
-/*
-void mostrarError(String mensaje) {
-  ScaffoldMessenger.of(context).showSnackBar(
-    SnackBar(content: Text(mensaje), backgroundColor: Colors.redAccent),
-  );
-}
-
-// Y luego solo llamas:
-if(produSelec.isEmpty) return mostrarError('Faltan productos');
-*/
