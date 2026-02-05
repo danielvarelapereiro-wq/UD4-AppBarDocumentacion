@@ -3,6 +3,7 @@ import 'package:application_bar_ud4/models/pedido.dart';
 import 'package:application_bar_ud4/models/productoPedido.dart';
 import 'package:application_bar_ud4/viewmodels/pedidoViewModel.dart';
 import 'pagAnadirProductos.dart';
+import 'package:flutter/services.dart';
 
 /// Página para crear un nuevo pedido.
 /// Permite introducir el número de mesa y añadir productos al pedido.
@@ -50,6 +51,13 @@ class _PagPedidoState extends State<PagPedido> {
             TextField(
               controller: mesaControler,
               keyboardType: TextInputType.number,
+              /// InputFormatters para validar que solo se introduzcan números y limitar la longitud a 2 caracteres.
+              /// FilteringTextInputFormatter.digitsOnly bloquea la entrada de letras, puntos y comas.
+              /// LengthLimitingTextInputFormatter(2) bloquea que se escriban más de 2 números.
+              inputFormatters: [
+                FilteringTextInputFormatter.digitsOnly, // Bloquea letras, puntos y comas
+                LengthLimitingTextInputFormatter(2),    // Bloquea que se escriban más de 2 números
+              ],
               decoration: const InputDecoration(
                 labelText: "Número de mesa:",
                 hintText: "Ejemplo: 1",
@@ -130,7 +138,7 @@ class _PagPedidoState extends State<PagPedido> {
                     return mostrarError('Para ver resumen, ha de tener productos añadidos y una mesa seleccionada');
                     }
 
-                  
+                  /// Si la validación es correcta, se navega a la página de resumen del pedido pasando el pedido como argumento.
                   Navigator.pushNamed(
                     context,
                     '/resumen', arguments: Pedido(
